@@ -1,0 +1,33 @@
+# Git and env
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+
+# Python
+.venv
+venv
+__pycache__
+*.py[cod]
+.pytest_cache
+.coverage
+htmlcov
+.tox
+.nox
+
+# IDE and OS
+.idea
+.vscode
+*.swp
+.DS_Store
+
+# Docs and local
+*.md
+!README.md
+docs/
+*.log
+
+# Tests (optional: include if you want tests in image)
+tests/
+examples/

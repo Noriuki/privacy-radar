@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "privacy-radar"
+version = "1.0.0"
+description = "Privacy analysis tool - LGPD/GDPR risks in APIs and payloads"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.109",
+    "uvicorn[standard]>=0.27",
+    "pydantic>=2.5",
+    "python-multipart>=0.0.6",
+    "pytest>=7.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov", "httpx", "ruff"]
+
+[project.scripts]
+privacy-radar = "app.interface.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*", "privacy_scan*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

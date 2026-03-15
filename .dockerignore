@@ -1,0 +1,10 @@
+# Usado quando o build context é a raiz (ex.: serviço web)
+.git
+.venv
+backend/
+frontend/node_modules
+frontend/dist
+*.md
+.env
+.env.*
+!.env.example
