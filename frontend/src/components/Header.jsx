@@ -1,22 +1,11 @@
-export function Header({ theme, onToggleTheme }) {
+export function Header() {
   return (
     <header className="header">
       <div className="header-row">
         <div>
           <h1 className="logo">PrivacyRadar</h1>
-          <p className="tagline">Análise de privacidade LGPD/GDPR em APIs e payloads</p>
+          <p className="tagline">5 perguntas amplas para devs + mapa de dados no contrato OpenAPI / GraphQL</p>
         </div>
-        {onToggleTheme && (
-          <button
-            type="button"
-            className="btn theme-toggle"
-            onClick={onToggleTheme}
-            title={theme === 'dark' ? 'Modo claro' : 'Modo escuro'}
-            aria-label={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}
-          >
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
-        )}
       </div>
     </header>
   )

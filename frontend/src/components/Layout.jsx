@@ -1,10 +1,10 @@
 import { Header } from './Header'
 import { Footer } from './Footer'
 
-export function Layout({ children, theme, onToggleTheme }) {
+export function Layout({ children }) {
   return (
     <>
-      <Header theme={theme} onToggleTheme={onToggleTheme} />
+      <Header />
       <main className="main">{children}</main>
       <Footer />
     </>

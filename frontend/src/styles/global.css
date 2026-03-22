@@ -10,19 +10,10 @@
   --high: #f97316;
   --error: #ef4444;
   --radius: 8px;
-}
-
-[data-theme="light"] {
-  --bg: #f8fafc;
-  --surface: #fff;
-  --border: #e2e8f0;
-  --text: #1e293b;
-  --muted: #64748b;
-  --accent: #16a34a;
-  --accent-dim: #15803d;
-  --warn: #ca8a04;
-  --high: #ea580c;
-  --error: #dc2626;
+  /* Scrollbar (Firefox + fallback) */
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: color-mix(in srgb, var(--accent) 35%, var(--border));
+  --scrollbar-thumb-hover: color-mix(in srgb, var(--accent) 55%, var(--border));
 }
 
 * { box-sizing: border-box; }
@@ -34,14 +25,41 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
-  transition: background 0.2s ease, color 0.2s ease;
 }
 
 #root {
-  max-width: 720px;
+  max-width: 1120px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
 }
 
 button { cursor: pointer; }
 input, textarea, button { font: inherit; }
+textarea { resize: none; }
+
+/* Scrollbars (Firefox) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* Chromium / Safari / Edge */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: var(--radius);
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: var(--radius);
+  border: 2px solid var(--scrollbar-track);
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+*::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}

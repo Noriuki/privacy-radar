@@ -1,38 +1,36 @@
-"""Tests for scan use case and detection engine."""
+"""Tests for privacy_scan modules (checklist + OpenAPI surface)."""
 
-import pytest
-
-from app.infrastructure.detection_engine import RuleBasedDetectionEngine
-
-
-@pytest.fixture
-def engine() -> RuleBasedDetectionEngine:
-    return RuleBasedDetectionEngine()
+from privacy_scan.lgpd_checklist import evaluate_checklist
+from privacy_scan.openapi_surface import analyze_openapi
 
 
-def test_scan_detects_email_and_phone(engine: RuleBasedDetectionEngine) -> None:
-    payload = {
-        "email": "user@email.com",
-        "name": "John Doe",
-        "phone": "+551199999999",
+def test_evaluate_checklist_high_score() -> None:
+    answers = {
+        "dados_clareza": "nao",
+        "fora_brasil": "nao",
+        "seguranca": "sim",
+        "exclusao": "sim",
+        "incidente": "sim",
     }
-    result = engine.scan_payload(payload)
-    types = {f.pattern_type for f in result.sensitive_fields}
-    assert "email" in types
-    assert "phone" in types
-    assert "name" in types
-    assert result.risk_level.value in ("low", "medium", "high", "critical")
-    assert 0 <= result.score <= 100
+    r = evaluate_checklist(answers)
+    assert r["score"] >= 70
+    assert r["maturity"] in ("high", "medium", "low")
 
 
-def test_scan_detects_cpf(engine: RuleBasedDetectionEngine) -> None:
-    payload = {"cpf": "123.456.789-00"}
-    result = engine.scan_payload(payload)
-    assert any(f.pattern_type == "cpf" for f in result.sensitive_fields)
-
-
-def test_scan_empty_payload(engine: RuleBasedDetectionEngine) -> None:
-    result = engine.scan_payload({})
-    assert len(result.sensitive_fields) == 0
-    assert result.risk_level.value == "low"
-    assert result.score == 0
+def test_analyze_openapi_finds_email_param() -> None:
+    spec = {
+        "openapi": "3.0.0",
+        "info": {"title": "X", "version": "1"},
+        "paths": {
+            "/x": {
+                "get": {
+                    "parameters": [{"name": "email", "in": "query"}],
+                    "responses": {"204": {"description": "no content"}},
+                }
+            }
+        },
+    }
+    out = analyze_openapi(spec)
+    assert len(out["endpoints"]) >= 1
+    ep = out["endpoints"][0]
+    assert any(p["field"] == "email" for p in ep["parameters_sensitive"])

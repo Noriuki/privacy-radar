@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "privacy-radar"
 version = "1.0.0"
-description = "Privacy analysis tool - LGPD/GDPR risks in APIs and payloads"
+description = "PrivacyRadar — LGPD checklist + OpenAPI/GraphQL contract surface analysis"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

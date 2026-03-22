@@ -3,21 +3,9 @@
 .header-row {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 1rem;
 }
-
-.theme-toggle {
-  flex-shrink: 0;
-  padding: 0.5rem 0.75rem;
-  font-size: 1.25rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: transform 0.15s ease;
-}
-.theme-toggle:hover { transform: scale(1.05); }
 
 .logo {
   font-size: 1.75rem;
@@ -31,10 +19,123 @@
 
 .tagline { margin: 0; color: var(--muted); font-size: 0.95rem; }
 
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.tab {
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+.q-block { margin-bottom: 1rem; }
+.q-label { display: block; font-size: 0.9rem; margin-bottom: 0.35rem; color: var(--text); }
+.q-label strong { font-weight: 600; color: var(--text); }
+.select {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+}
+
+.endpoint-list { list-style: none; margin: 0; padding: 0; }
+.endpoint-card {
+  margin-bottom: 0.75rem;
+  padding: 0.75rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+}
+.endpoint-card code { color: var(--accent); }
+.badge-warn {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(234, 179, 8, 0.15);
+  color: var(--warn);
+}
+.sens-grid { display: flex; flex-direction: column; gap: 0.25rem; margin-top: 0.5rem; color: var(--muted); }
+.gaps-list { margin: 0.5rem 0 0 0; padding-left: 1.25rem; }
+.disclaimer { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+.error-inline { color: var(--error); }
+
 .panel { margin-top: 0; }
 .panel .placeholder { color: var(--muted); font-size: 0.95rem; }
 .panel h2 { font-size: 1.15rem; margin: 0 0 0.35rem 0; }
 .hint { color: var(--muted); font-size: 0.85rem; margin: 0 0 1rem 0; }
+
+/* Formulário à esquerda, análise à direita */
+.split-head { margin-bottom: 1rem; }
+.split-head h2 { margin: 0 0 0.35rem 0; }
+.split-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.25rem 1.5rem;
+  align-items: start;
+}
+.split-col--form label[htmlFor="contract-json"] { margin-top: 0; }
+.split-col--analysis {
+  position: sticky;
+  top: 0.75rem;
+}
+.split-col--analysis .result {
+  margin-top: 0;
+  max-height: min(78vh, 880px);
+}
+.split-placeholder {
+  margin: 0;
+  padding: 1.25rem 1rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.5;
+}
+/* Botão de ação na 1ª coluna, alinhado à direita */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.25rem;
+}
+.split-col--analysis h3.analysis-pane-title {
+  font-size: 0.95rem;
+  margin: 0 0 0.75rem 0;
+  color: var(--muted);
+  font-weight: 600;
+}
+@media (max-width: 900px) {
+  .split-grid {
+    grid-template-columns: 1fr;
+  }
+  .split-col--analysis {
+    position: static;
+  }
+  .split-col--analysis .result {
+    max-height: none;
+  }
+}
 
 label { display: block; font-size: 0.85rem; color: var(--muted); margin: 1rem 0 0.35rem 0; }
 label:first-of-type { margin-top: 0; }
@@ -48,7 +149,7 @@ label:first-of-type { margin-top: 0; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  resize: vertical;
+  resize: none;
   margin-bottom: 1rem;
 }
 
@@ -174,14 +275,6 @@ kbd {
 @keyframes reportFadeIn {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* Stats bar */
-.stats-bar {
-  margin-top: 1.25rem;
-  padding: 0.6rem 0;
-  font-size: 0.85rem;
-  border-top: 1px solid var(--border);
 }
 
 /* History */

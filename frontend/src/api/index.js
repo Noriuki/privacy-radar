@@ -1,6 +1,5 @@
 /**
- * HTTP client for PrivacyRadar API.
- * VITE_API_URL: backend base URL (e.g. http://localhost:8000).
+ * PrivacyRadar API — LGPD checklist + OpenAPI/GraphQL contract analysis.
  */
 
 const API_BASE =
@@ -16,24 +15,34 @@ export async function request(endpoint, options = {}) {
   })
   if (!res.ok) {
     const err = await res.json().catch(() => ({}))
-    const detail = Array.isArray(err.detail) ? err.detail.map((e) => e.msg || e).join('; ') : (err.detail || res.statusText)
+    const detail = Array.isArray(err.detail)
+      ? err.detail.map((e) => e.msg || e).join('; ')
+      : err.detail || res.statusText
     throw new Error(detail)
   }
   return res.json()
 }
 
-/**
- * Scan a JSON payload for privacy risks.
- * @param {Record<string, unknown>} payload - JSON object to scan (e.g. { email, name, phone })
- * @returns {Promise<ScanReport>}
- */
-export async function scanPayload(payload) {
-  return request('/scan', { method: 'POST', body: payload })
+export async function getLgpdQuestions() {
+  return request('/lgpd/questions', { method: 'GET' })
 }
 
-/** Stats for observability (total scans, by risk level). */
-export async function getStats() {
-  return request('/stats', { method: 'GET' })
+export async function submitLgpdChecklist(answers) {
+  return request('/lgpd/submit', { method: 'POST', body: { answers } })
 }
 
-export const api = { scanPayload, getStats, request }
+export async function analyzeOpenApiContract(spec) {
+  return request('/contract/openapi', { method: 'POST', body: spec })
+}
+
+export async function analyzeGraphqlContract(schemaDoc) {
+  return request('/contract/graphql', { method: 'POST', body: schemaDoc })
+}
+
+export const api = {
+  getLgpdQuestions,
+  submitLgpdChecklist,
+  analyzeOpenApiContract,
+  analyzeGraphqlContract,
+  request,
+}

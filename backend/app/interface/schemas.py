@@ -1,35 +1,56 @@
 """Pydantic schemas for API request/response."""
 
-from pydantic import BaseModel, ConfigDict, Field
-
-from app.domain.entities import RiskLevel
+from pydantic import BaseModel, Field
 
 
-class SensitiveFieldResponse(BaseModel):
-    """A detected sensitive field in the report."""
+class GapItem(BaseModel):
+    """LGPD gap with article reference."""
 
-    field_path: str
-    field_name: str
-    pattern_type: str
-    sample_value: str | None = None
-
-
-class RiskResponse(BaseModel):
-    """A privacy risk with recommendation."""
-
-    code: str
-    description: str
-    recommendation: str
-    severity: RiskLevel
+    article: str
+    title: str
+    gap: str
 
 
-class ScanResponse(BaseModel):
-    """Privacy scan report response."""
+class LgpdChecklistSubmitRequest(BaseModel):
+    """Answers: question id -> selected option value."""
 
-    model_config = ConfigDict(use_enum_values=True)
+    answers: dict[str, str] = Field(..., description="Map of question id to answer value")
 
-    sensitive_fields: list[SensitiveFieldResponse]
-    risks: list[RiskResponse]
-    risk_level: RiskLevel
+
+class LgpdChecklistReportResponse(BaseModel):
+    """Result of LGPD checklist evaluation."""
+
     score: float
+    maturity: str
+    gaps: list[GapItem]
+    recommendations: list[str]
+    disclaimer: str
+
+
+class ContractSummary(BaseModel):
+    """Summary block for OpenAPI analysis."""
+
+    total_operations_with_schema: int = 0
+    operations_with_personal_data_fields: int = 0
+    operations_with_sensitive_data_and_no_security_doc: int = 0
+
+
+class OpenAPIContractResponse(BaseModel):
+    """OpenAPI contract surface analysis."""
+
+    openapi_version: str | None = None
+    title: str | None = None
+    endpoints: list[dict] = Field(default_factory=list)
+    summary: dict = Field(default_factory=dict)
     recommendations: list[str] = Field(default_factory=list)
+    error: str | None = None
+
+
+class GraphQLContractResponse(BaseModel):
+    """GraphQL schema surface analysis."""
+
+    graphql: bool = True
+    types_with_personal_data_hints: list[dict] = Field(default_factory=list)
+    summary: dict = Field(default_factory=dict)
+    recommendations: list[str] = Field(default_factory=list)
+    error: str | None = None

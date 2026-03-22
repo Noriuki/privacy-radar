@@ -2,7 +2,7 @@ export function Footer() {
   return (
     <footer className="footer">
       <p>
-        PrivacyRadar — detecta dados sensíveis e riscos de conformidade em payloads JSON.
+        PrivacyRadar — checklist LGPD e mapa de dados pessoais no contrato OpenAPI / GraphQL.
       </p>
     </footer>
   )

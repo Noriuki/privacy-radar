@@ -16,7 +16,7 @@ def _version() -> str:
 
 app = FastAPI(
     title="PrivacyRadar API",
-    description="Privacy analysis tool for LGPD/GDPR - scan payloads for sensitive data and risks.",
+    description="Assistente de privacidade LGPD: questionário guiado + análise de contrato OpenAPI/GraphQL.",
     version=_version(),
 )
 
