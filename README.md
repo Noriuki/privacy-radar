@@ -33,6 +33,7 @@ privacy-radar/
 ## Como rodar
 
 **Com Make (recomendado):**
+
 ```bash
 make install-backend   # uma vez
 make install-frontend   # uma vez
@@ -72,20 +73,6 @@ O PrivacyRadar ajuda a **identificar** campos sensíveis em payloads JSON, **ava
 - **CLI** no backend: `privacy-radar [arquivo.json]` ou stdin.
 - **Opcionais**: upload de arquivo JSON, escaneamento de schema OpenAPI.
 
-### Destaques para recrutadores
-
-| Área | Feature | Por que impressiona |
-|------|---------|---------------------|
-| **Backend** | **Rate limiting** (30 req/min por IP) | Consciência de produção; resposta 429 + `Retry-After` |
-| **Backend** | **GET /api/v1/stats** | Observabilidade: total de scans e contagem por nível de risco |
-| **Frontend** | **Tema claro/escuro** | UX polida; persistência em `localStorage` |
-| **Frontend** | **Exemplos rápidos** | Botões para preencher payload (Pessoal, Com CPF, Vazio) |
-| **Frontend** | **Copiar relatório** | Um clique para copiar o JSON do relatório |
-| **Frontend** | **Últimos escaneamentos** | Histórico local (últimos 5) com “Restaurar” |
-| **Frontend** | **Ctrl+Enter** | Atalho de teclado para escanear |
-| **Frontend** | **Animação** | Transição suave ao exibir o relatório |
-| **DevOps** | **Makefile** | `make run-backend`, `make test`, `make docker-up` |
-
 ---
 
 ## API (backend)
@@ -96,12 +83,12 @@ O PrivacyRadar ajuda a **identificar** campos sensíveis em payloads JSON, **ava
 
 Endpoints sob `/api/v1`:
 
-| Método | Endpoint       | Descrição                          |
-|--------|----------------|------------------------------------|
-| GET    | `/api/v1/stats` | Estatísticas (total de scans, por nível de risco) |
-| POST   | `/api/v1/scan` | Escanear um JSON (body = payload). **Rate limit:** 30/min por IP |
-| POST   | `/api/v1/scan/file` | Upload de arquivo JSON (multipart, key `file`) |
-| POST   | `/api/v1/scan/schema` | Escanear documento OpenAPI/JSON Schema |
+| Método | Endpoint              | Descrição                                                        |
+| ------ | --------------------- | ---------------------------------------------------------------- |
+| GET    | `/api/v1/stats`       | Estatísticas (total de scans, por nível de risco)                |
+| POST   | `/api/v1/scan`        | Escanear um JSON (body = payload). **Rate limit:** 30/min por IP |
+| POST   | `/api/v1/scan/file`   | Upload de arquivo JSON (multipart, key `file`)                   |
+| POST   | `/api/v1/scan/schema` | Escanear documento OpenAPI/JSON Schema                           |
 
 **Exemplo POST /api/v1/scan:**
 
@@ -151,14 +138,14 @@ Módulo **privacy_scan**: `detectors.py` (padrões e nomes de campos), `rules.py
 
 ## Riscos detectados (exemplos)
 
-| Dado detectado   | Código           | Exemplo de recomendação                    |
-|------------------|------------------|-------------------------------------------|
-| Email / telefone | LGPD-CONTACT     | Criptografar dados; política de retenção  |
-| CPF / RG / CNPJ  | LGPD-IDENTIFIER  | Tokenização; armazenar só se necessário   |
-| Endereço / CEP   | LGPD-LOCATION    | Minimizar coleta; criptografia e retenção |
-| Nome / data nasc.| GDPR-PII         | Base legal e consentimento; minimização    |
-| IP               | GDPR-IP          | Anonimizar; documentar base legal          |
-| Cartão           | PCI-SENSITIVE    | Não armazenar número bruto; tokenização   |
+| Dado detectado    | Código          | Exemplo de recomendação                   |
+| ----------------- | --------------- | ----------------------------------------- |
+| Email / telefone  | LGPD-CONTACT    | Criptografar dados; política de retenção  |
+| CPF / RG / CNPJ   | LGPD-IDENTIFIER | Tokenização; armazenar só se necessário   |
+| Endereço / CEP    | LGPD-LOCATION   | Minimizar coleta; criptografia e retenção |
+| Nome / data nasc. | GDPR-PII        | Base legal e consentimento; minimização   |
+| IP                | GDPR-IP         | Anonimizar; documentar base legal         |
+| Cartão            | PCI-SENSITIVE   | Não armazenar número bruto; tokenização   |
 
 ---
 
